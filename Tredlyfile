@@ -59,12 +59,16 @@ maxRam=
 # URL(s) the container services (optional | one per line).
 # If URL has urlCert entered proxy will automatically redirect HTTP traffic to HTTPS URL. If urlCert is not specified connections to HTTPS will result in 404 error.
 
-# URL
-url=
-urlRedirect=
+## **** CHANGE ME **** ##
+## These need to be updated based on your actual URL
+url=symphonycms.tredly
+urlRedirect=www.symphonycms.tredly
+## **** **** **** **** ##
 urlCert=
 urlWebsocket=
 urlMaxFileSize=
+
+
 
 # If your container services a URL make sure you put port 443 as a tcpInPort option so this containers firewall is open
 # on this port and can receive traffic from the internal HTTP proxy.
@@ -85,7 +89,6 @@ tcpInPort=80
 udpInPort=
 tcpOutPort=80
 tcpOutPort=443
-tcpOutPort=3306
 udpOutPort=53
 
 ## IPV4 WHITELIST
@@ -134,23 +137,33 @@ installPackage=php56-mbstring
 installPackage=php56-curl
 installPackage=php56-zip
 installPackage=php56-ctype
+installPackage=php56-json
+installPackage=php56-zlib
 
-fileFolderMapping=/my.cnf /usr/local/etc/
-fileFolderMapping=/grant.sql /usr/local/
+fileFolderMapping=/mariadb/my.cnf /usr/local/etc/
+fileFolderMapping=/mariadb/grant.sql /usr/local/
+fileFolderMapping=/apache/php.conf /usr/local/etc/apache24/Includes/
+fileFolderMapping=/apache/serverName.conf /usr/local/etc/apache24/Includes/
+fileFolderMapping=/apache/www.conf /usr/local/etc/apache24/Includes/
+fileFolderMapping=/apache/modules.conf /usr/local/etc/apache24/Includes/
 
+onStart= rm /usr/local/www/apache24/data/index.html
 onStart= chmod 1777 /tmp
 onStart= cd /usr/local/ && mysql_install_db --user=mysql --basedir=/usr/local --basedir=/usr/local --datadir=/var/db/mysql
 onStart= sysrc mysql_enable=yes && service mysql-server start
 onStart= mysql -uroot < /usr/local/grant.sql
 
-onStart= mkdir -p /usr/local/www/apache24/data/manifest/cache
-onStart= mkdir -p /usr/local/www/apache24/data/manifest/logs
+onStart= mkdir -p /usr/local/www/apache24/data/logs/
+
+onStart= mkdir -p /usr/local/www/apache24/data/public/
+onStart= mkdir -p /usr/local/www/apache24/data/public/manifest/cache
+onStart= mkdir -p /usr/local/www/apache24/data/public/manifest/logs
 
 onStart= wget https://github.com/symphonycms/symphony-2/archive/2.6.7.tar.gz
-onStart= tar -zxf 2.6.7.tar.gz --directory=/usr/local/www/apache24/data
+onStart= tar -zxf 2.6.7.tar.gz --strip-components=1 --directory=/usr/local/www/apache24/data/public/
 
-onStart= chown -R www:www /usr/local/www/apache24/data
-onStart= chmod -R 0777 /usr/local/www/apache24/data/manifest /usr/local/www/apache24/data/workspace
+onStart= chown -R www:www /usr/local/www/apache24/data/
+onStart= chmod -R 0777 /usr/local/www/apache24/data/public/manifest
 
 onStart= sysrc apache24_enable=yes && service apache24 start
 
