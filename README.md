@@ -16,11 +16,7 @@ Requires Tredly 0.9.0 [https://github.com/vuid-com/tredly-host]
 
 ### Changing the container name
 
-By default, the container name is `container-mariadb`. Change this by editing `containerName` in the `Tredlyfile` prior to building this container.
-
-### Allowing conncetions to MySQL from outside
-
-To enable connections in to MySQL, add `tcpInPort=53306` to your Tredlyfile under the `## FIREWALL` section.
+By default, the container name is `container-symphony2`. Change this by editing `containerName` in the `Tredlyfile` prior to building this container.
 
 ## Usage
 
