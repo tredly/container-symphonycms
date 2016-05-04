@@ -1,6 +1,6 @@
 #############################
 #### Tredlyfile version number
-versionNumber=0.9.0
+versionNumber=0.10.0
 #############################
 
 # You can use variables within this file which should be interpreted by your
@@ -138,8 +138,8 @@ maxRam=
 
 ## **** CHANGE ME **** ##
 ## These need to be updated based on your actual URL
-url=symphonycms.tredly
-urlRedirect=www.symphonycms.tredly
+url1=symphonycms.tredly
+url1Redirect=www.symphonycms.tredly
 ## **** **** **** **** ##
 urlCert=
 urlWebsocket=
