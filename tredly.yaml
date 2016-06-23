@@ -1,0 +1,201 @@
+---
+  container:
+    operations:
+      onCreate:
+        -
+          value: "nano"
+          type: "installPackage"
+        -
+          value: "wget"
+          type: "installPackage"
+        -
+          value: "apache24"
+          type: "installPackage"
+        -
+          value: "mariadb55-server"
+          type: "installPackage"
+        -
+          value: "libxml2"
+          type: "installPackage"
+        -
+          value: "mod_php56"
+          type: "installPackage"
+        -
+          value: "php56-session"
+          type: "installPackage"
+        -
+          value: "php56-xml"
+          type: "installPackage"
+        -
+          value: "php56-tokenizer"
+          type: "installPackage"
+        -
+          value: "php56-hash"
+          type: "installPackage"
+        -
+          value: "php56-xmlreader"
+          type: "installPackage"
+        -
+          value: "php56-dom"
+          type: "installPackage"
+        -
+          value: "php56-mysql"
+          type: "installPackage"
+        -
+          value: "php56-mysqli"
+          type: "installPackage"
+        -
+          value: "php56-iconv"
+          type: "installPackage"
+        -
+          value: "php56-filter"
+          type: "installPackage"
+        -
+          value: "php56-opcache"
+          type: "installPackage"
+        -
+          value: "php56-posix"
+          type: "installPackage"
+        -
+          value: "php56-simplexml"
+          type: "installPackage"
+        -
+          value: "php56-xmlwriter"
+          type: "installPackage"
+        -
+          value: "php56-xsl"
+          type: "installPackage"
+        -
+          value: "php56-openssl"
+          type: "installPackage"
+        -
+          value: "php56-mbstring"
+          type: "installPackage"
+        -
+          value: "php56-curl"
+          type: "installPackage"
+        -
+          value: "php56-zip"
+          type: "installPackage"
+        -
+          value: "php56-ctype"
+          type: "installPackage"
+        -
+          value: "php56-json"
+          type: "installPackage"
+        -
+          value: "php56-zlib"
+          type: "installPackage"
+        -
+          source: "/mariadb/my.cnf"
+          target: "/usr/local/etc/"
+          type: "fileFolderMapping"
+        -
+          source: "/mariadb/grant.sql"
+          target: "/usr/local/"
+          type: "fileFolderMapping"
+        -
+          source: "/apache/php.conf"
+          target: "/usr/local/etc/apache24/Includes/"
+          type: "fileFolderMapping"
+        -
+          source: "/apache/serverName.conf"
+          target: "/usr/local/etc/apache24/Includes/"
+          type: "fileFolderMapping"
+        -
+          source: "/apache/www.conf"
+          target: "/usr/local/etc/apache24/Includes/"
+          type: "fileFolderMapping"
+        -
+          source: "/apache/modules.conf"
+          target: "/usr/local/etc/apache24/Includes/"
+          type: "fileFolderMapping"
+        -
+          value: "rm /usr/local/www/apache24/data/index.html"
+          type: "exec"
+        -
+          value: "chmod 1777 /tmp"
+          type: "exec"
+        -
+          value: "cd /usr/local/ && mysql_install_db --user=mysql --basedir=/usr/local --basedir=/usr/local --datadir=/var/db/mysql"
+          type: "exec"
+        -
+          value: "sysrc mysql_enable=yes && service mysql-server start"
+          type: "exec"
+        -
+          value: "mysql -uroot < /usr/local/grant.sql"
+          type: "exec"
+        -
+          value: "mkdir -p /usr/local/www/apache24/data/logs/"
+          type: "exec"
+        -
+          value: "mkdir -p /usr/local/www/apache24/data/public/"
+          type: "exec"
+        -
+          value: "mkdir -p /usr/local/www/apache24/data/public/manifest/cache"
+          type: "exec"
+        -
+          value: "mkdir -p /usr/local/www/apache24/data/public/manifest/logs"
+          type: "exec"
+        -
+          value: "wget https://github.com/symphonycms/symphony-2/archive/2.6.7.tar.gz"
+          type: "exec"
+        -
+          value: "tar -zxf 2.6.7.tar.gz --strip-components=1 --directory=/usr/local/www/apache24/data/public/"
+          type: "exec"
+        -
+          value: "chown -R www:www /usr/local/www/apache24/data/"
+          type: "exec"
+        -
+          value: "chmod -R 0777 /usr/local/www/apache24/data/public/manifest"
+          type: "exec"
+        -
+          value: "sysrc apache24_enable=yes && service apache24 start"
+          type: "exec"
+      onStop:
+        -
+          value: "service mysql-server stop"
+          type: "exec"
+        -
+          value: "service apache24 stop"
+          type: "exec"
+    firewall:
+      ipv4Whitelist: []
+      allowPorts:
+        udp:
+          in: []
+          out:
+            - 53
+        tcp:
+          in:
+            - 443
+            - 80
+          out:
+            - 80
+            - 443
+    customDNS: []
+    name: "container-symphony2"
+    buildOptions:
+      publish: false
+    proxy:
+      layer4Proxy: false
+      ## **** CHANGE ME **** ##
+      ## These need to be updated based on your actual URL
+      layer7Proxy:
+        -
+          redirects:
+            -
+              cert: null
+              url: "http://www.symphonycms.tredly"
+          url: "symphonycms.tredly"
+          enableWebsocket: false
+          cert: null
+          maxFileSize: "1m"
+    startOrder: 1
+    replicate: false
+    compatibleWith: "1.0.0"
+    resourceLimits:
+      maxHdd: "unlimited"
+      maxRam: "unlimited"
+      maxCpu: "unlimited"
+    technicalOptions: {}
