@@ -193,7 +193,7 @@
           maxFileSize: "1m"
     startOrder: 1
     replicate: false
-    compatibleWith: "1.0.0"
+    compatibleWith: "1.1.0"
     resourceLimits:
       maxHdd: "unlimited"
       maxRam: "unlimited"

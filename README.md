@@ -1,12 +1,12 @@
 # SymphonyCMS 2.6 Container for Tredly
 
-Version 1.0.3 June 24 2016
+Version 1.0.4 August 16 2016
 
 This container is an all-in-one FAMP (FreeBSD, Apache, MySQL, PHP) stack running SymphonyCMS. It relies in the Tredly FreeBSD containers platform. You can find out more information about Tredly at **<http://tredly.com>**
 
 ## Installation
 
-Requires Tredly 1.0.0 <https://github.com/tredly/tredly> or later
+Requires Tredly 1.1.0 <https://github.com/tredly/tredly> or later
 
 1. Modify `mariadb/grant.cnf`
 2. Change the mysql user password from `super_secret_password` to something more secure. Note that this container does not allow outside connections to MySQL, however it is good practise to use a secure password. There are 2 places this needs to be changed; lines #2 and #3.
